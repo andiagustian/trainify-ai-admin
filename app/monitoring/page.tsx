@@ -9,7 +9,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
 } from 'recharts'
 
-const CHART_COLORS = ['#3b82f6', '#10b981']
+const CHART_COLORS = ['#3b82f6', '#8b5cf6', '#10b981']
 
 const TOOLTIP_STYLE = {
   background: '#ffffff',
@@ -40,6 +40,7 @@ export default function MonitoringPage() {
 
   const tierData = [
     { name: 'Free', value: metrics?.metrics.tierDistribution.free ?? 0 },
+    { name: 'Starter', value: metrics?.metrics.tierDistribution.starter ?? 0 },
     { name: 'Pro',  value: metrics?.metrics.tierDistribution.pro  ?? 0 },
   ]
 
@@ -67,10 +68,10 @@ export default function MonitoringPage() {
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {[
-                { label: 'Total Users',       value: metrics?.metrics.totalUsers ?? 0,          sub: undefined },
-                { label: 'Active (30d)',       value: metrics?.metrics.activeUsers ?? 0,         sub: `${metrics?.metrics.activeUsersPercent ?? 0}%` },
-                { label: 'Pro Subscriptions', value: revenue?.subscriptions.activeSubs ?? 0,    sub: undefined },
-                { label: 'MRR',               value: `$${revenue?.revenue.MRR ?? 0}`,           sub: `ARR $${revenue?.revenue.ARR ?? 0}` },
+                { label: 'Total Users',       value: metrics?.metrics.totalUsers ?? 0,                                               sub: undefined },
+                { label: 'Active (30d)',       value: metrics?.metrics.activeUsers ?? 0,                                              sub: `${metrics?.metrics.activeUsersPercent ?? 0}%` },
+                { label: 'Paid Subs',         value: (revenue?.subscriptions.activeStarter ?? 0) + (revenue?.subscriptions.activePro ?? 0),  sub: `Starter: ${revenue?.subscriptions.activeStarter ?? 0} | Pro: ${revenue?.subscriptions.activePro ?? 0}` },
+                { label: 'MRR (IDR)',         value: `Rp${(revenue?.revenue.MRR ?? 0).toLocaleString('id-ID')}`,                      sub: `ARR: Rp${(revenue?.revenue.ARR ?? 0).toLocaleString('id-ID')}` },
               ].map((s) => (
                 <div key={s.label} className="stat-card">
                   <p className="stat-label">{s.label}</p>

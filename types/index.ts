@@ -15,7 +15,7 @@ export interface AppUser {
   email: string
   createdAt: string
   lastSignIn: string | null
-  tier: 'free' | 'pro'
+  tier: 'free' | 'starter' | 'pro'
   subscriptionStatus: string | null
   expiresAt: string | null
   status: 'active' | 'banned' | 'suspended'
@@ -26,7 +26,7 @@ export interface AppUser {
 export interface Subscription {
   id: string
   userId: string
-  tier: 'free' | 'pro'
+  tier: 'free' | 'starter' | 'pro'
   status: string
   expiresAt: string | null
   createdAt: string
@@ -57,9 +57,11 @@ export interface DashboardMetrics {
     activeUsersPercent: string
     tierDistribution: {
       free: number
+      starter: number
       pro: number
     }
     proUserCount: number
+    starterUserCount?: number
     freeUserCount: number
   }
   conversions: {
@@ -75,8 +77,10 @@ export interface DashboardMetrics {
 
 export interface RevenueMetrics {
   subscriptions: {
-    totalProCount: number
-    activeSubs: number
+    totalCount: number
+    totalActive: number
+    activeStarter: number
+    activePro: number
     expiredSubs: number
     activePercent: string
   }
@@ -84,8 +88,10 @@ export interface RevenueMetrics {
     MRR: number
     ARR: number
     currencyCode: string
-    pricePerMonth: number
-    pricePerYear: number
+    pricing: {
+      starter: { monthly: number; yearly: number }
+      pro: { monthly: number; yearly: number }
+    }
   }
   trends: {
     monthlyNewSubscribers: Record<string, number>

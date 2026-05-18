@@ -11,7 +11,7 @@ import type { AppUser } from '@/types'
 export default function UsersPage() {
   const [filters, setFilters] = useState({
     search: '',
-    tier: 'all' as 'all' | 'free' | 'pro',
+    tier: 'all' as 'all' | 'free' | 'starter' | 'pro',
     status: 'all' as 'all' | 'active' | 'banned' | 'suspended',
   })
   const [page, setPage] = useState(0)
@@ -65,6 +65,7 @@ export default function UsersPage() {
                   >
                     <option value="all">All tiers</option>
                     <option value="free">Free</option>
+                    <option value="starter">Starter</option>
                     <option value="pro">Pro</option>
                   </select>
                 </div>

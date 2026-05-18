@@ -45,13 +45,14 @@ export default function DashboardPage() {
               sub={`${metrics?.metrics.activeUsersPercent ?? 0}% of total`}
             />
             <StatCard
-              label="Pro Subscriptions"
-              value={revenueLoading ? '—' : (revenue?.subscriptions.activeSubs ?? 0)}
+              label="Paid Subscriptions"
+              value={revenueLoading ? '—' : ((revenue?.subscriptions.activeStarter ?? 0) + (revenue?.subscriptions.activePro ?? 0))}
+              sub={`Starter: ${revenue?.subscriptions.activeStarter ?? 0} | Pro: ${revenue?.subscriptions.activePro ?? 0}`}
             />
             <StatCard
-              label="MRR"
-              value={revenueLoading ? '—' : `$${revenue?.revenue.MRR ?? 0}`}
-              sub={`ARR $${revenue?.revenue.ARR ?? 0}`}
+              label="MRR (IDR)"
+              value={revenueLoading ? '—' : `Rp${(revenue?.revenue.MRR ?? 0).toLocaleString('id-ID')}`}
+              sub={`ARR: Rp${(revenue?.revenue.ARR ?? 0).toLocaleString('id-ID')}`}
             />
           </div>
 
@@ -91,6 +92,9 @@ export default function DashboardPage() {
             <div className="card-body flex flex-wrap gap-2">
               <Link href="/users" className="btn-primary text-xs">
                 Manage Users
+              </Link>
+              <Link href="/admin" className="btn-primary text-xs">
+                Admin Management
               </Link>
               <Link href="/monitoring" className="btn-secondary text-xs">
                 View Monitoring

@@ -21,7 +21,7 @@ export default function UserDetailPage({
   const [userId, setUserId] = useState<string>('')
   const [actionModal, setActionModal] = useState<'ban' | 'suspend' | 'override' | null>(null)
   const [actionReason, setActionReason] = useState('')
-  const [overrideTier, setOverrideTier] = useState<'free' | 'pro'>('pro')
+  const [overrideTier, setOverrideTier] = useState<'free' | 'starter' | 'pro'>('pro')
   const [overrideExpiry, setOverrideExpiry] = useState('')
 
   useEffect(() => {
@@ -278,21 +278,24 @@ export default function UserDetailPage({
                       <select
                         className="input"
                         value={overrideTier}
-                        onChange={(e) => setOverrideTier(e.target.value as 'free' | 'pro')}
+                        onChange={(e) => setOverrideTier(e.target.value as 'free' | 'starter' | 'pro')}
                       >
                         <option value="free">Free</option>
-                        <option value="pro">Pro</option>
+                        <option value="starter">Starter (Rp 49k/month)</option>
+                        <option value="pro">Pro (Rp 69k/month)</option>
                       </select>
                     </div>
-                    {overrideTier === 'pro' && (
+                    {overrideTier !== 'free' && (
                       <div>
-                        <label className="label">Expiry Date</label>
+                        <label className="label">Expiry Date (Optional)</label>
                         <input
                           type="date"
                           className="input"
                           value={overrideExpiry}
                           onChange={(e) => setOverrideExpiry(e.target.value)}
+                          placeholder="Leave empty for +30 days"
                         />
+                        <p className="text-xs text-gray-500 mt-1">Leave empty to auto-set 30 days from now</p>
                       </div>
                     )}
                   </div>

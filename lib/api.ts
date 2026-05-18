@@ -45,7 +45,7 @@ async function apiCall(endpoint: string, options: RequestInit = {}) {
  * Get list of all users
  */
 export async function getUsers(filters?: {
-  tier?: 'free' | 'pro'
+  tier?: 'free' | 'starter' | 'pro'
   status?: 'active' | 'banned' | 'suspended'
   search?: string
   limit?: number
@@ -125,7 +125,7 @@ export async function resetUsage(userId: string) {
  */
 export async function overrideSubscription(
   userId: string,
-  tier: 'free' | 'pro',
+  tier: 'free' | 'starter' | 'pro',
   expiresAt?: string,
   reason?: string
 ) {
@@ -187,4 +187,50 @@ export async function getRevenueMetrics() {
  */
 export async function getSystemHealth() {
   return apiCall('/admin/system/health') as Promise<SystemHealth>
+}
+
+/**
+ * Invite a new admin user via email (superadmin only)
+ */
+export async function inviteAdmin(email: string, role: 'admin' | 'superadmin' = 'admin') {
+  return apiCall('/admin/auth/invite', {
+    method: 'POST',
+    body: JSON.stringify({ email, role }),
+  }) as Promise<{
+    success: boolean
+    emailSent: boolean
+    message: string
+    warning?: string
+    admin?: any
+  }>
+}
+
+/**
+ * Get list of all admin users (superadmin only)
+ */
+export async function getAdmins() {
+  return apiCall('/admin/auth/admins') as Promise<{
+    success: boolean
+    admins: Array<{
+      id: string
+      email: string
+      role: 'admin' | 'superadmin'
+      created_at: string
+      last_sign_in_at: string | null
+      status: 'active' | 'inactive' | 'never_logged_in'
+    }>
+    total: number
+  }>
+}
+
+/**
+ * Delete admin user (superadmin only)
+ */
+export async function deleteAdmin(adminId: string) {
+  return apiCall(`/admin/auth/admins?id=${adminId}`, {
+    method: 'DELETE',
+  }) as Promise<{
+    success: boolean
+    message: string
+  }>
 }
